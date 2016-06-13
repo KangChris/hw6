@@ -12,6 +12,7 @@ var items = firebase.database().ref("items");
 var users = firebase.database().ref("users");
 var upModel = new UploadModal($("#upload-modal"));
 var viewModel = new ViewModal($("#view-model"));
+var nowItems ;
 
 
 /*
@@ -46,6 +47,9 @@ $("#signin").click(function () {
         var useruid = result.user.uid;
         data["/users/"+ useruid + "/name"] = result.user.displayName;
         data["/users/"+ useruid + "/photo"] = result.user.photoURL;
+        currentUser.displayName = result.user.displayName;
+        currentUser.uid = result.user.uid;
+        currentUser.photoURL = result.user.photoURL;
         firebase.database().ref().update(data);
     }).catch(function (error) {
         var errorCode = error.code;
@@ -63,7 +67,7 @@ $("#signout").click(function () {
     });
 });
 
-$("#submitData").click(function () {
+$("#submitData").click(function (e) {
     // 上傳新商品
     var upData = {};
     console.log(items);
