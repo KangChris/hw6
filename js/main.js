@@ -70,23 +70,29 @@ $("#signout").click(function () {
 $("#submitData").click(function (e) {
     // 上傳新商品
     var upData = {};
-    console.log(items);
-    items.push({"title":$("#itemName").val(), "price":parseInt($("#price").val()), "descrip":$("#descrip").val(),"seller":$("#picData").val()});
-    $("form").submit(function() {
-        if ($("#itemName, #price, #descrip, .picBox").val() == "correct") {
-            return true;
-        } else {
-            return false;
-        }
-    })
+    var dataArray = $("#item-info").serializeArray();
+    var picFile = $("#picData").get(0).files[0];
+    if (dataArray[0] != null && dataArray[1] != null && dataArray[2] != null && picFile) {
+        console.log(items);
+        items.push({"title":$("#itemName").val(), "price":parseInt($("#price").val()), "descrip":$("#descrip").val(),"seller":$("#picData").val()});
+        $('#upload-modal').modal('hide');
+    } else {
+        console.log("without updating!");
+        alert("Please input whole information!");
+    }
 });
 
 $("#editData").click(function () {
     // 編輯商品資訊
+    var dataArray = $("#item-info").serializeArray();
+    var picFile = $("#picData").get(0).files[0];
+
 })
 
 $("#removeData").click(function () {
     //刪除商品
+    firebase.database().ref("items/" + currentItem.itemKey).remove();
+    $("#upload-modal").modal('hide');
 })
 
 
